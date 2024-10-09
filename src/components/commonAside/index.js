@@ -1,43 +1,42 @@
 import React from "react";
-import {
-    UploadOutlined,
-    UserOutlined,
-    VideoCameraOutlined,
-  } from '@ant-design/icons';
+import * as Icon from '@ant-design/icons';
   import {  Layout, Menu } from 'antd';
+import MenuConfig from "../../config";
   const {  Sider } = Layout;
   
-const CommonAside = () =>{
+const generateElement = (name)=> React.createElement(Icon[name])
 
-    return(
-        <Sider trigger={null} collapsible >
-        <h3 className="app-name">后台管理系统</h3>
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={['1']}
-          items={[
-            {
-              key: '1',
-              icon: <UserOutlined />,
-              label: 'nav 1',
-            },
-            {
-              key: '2',
-              icon: <VideoCameraOutlined />,
-              label: 'nav 2',
-            },
-            {
-              key: '3',
-              icon: <UploadOutlined />,
-              label: 'nav 3',
-            },
-          ]}
-          style={{
-            height:'100%'
-          }}
-        />
-      </Sider>
+const items = MenuConfig.map((item)=>{
+    const child = {
+        key:item.path,
+        icon:generateElement(item.icon),
+        label:item.label
+    }
+    if(item.children){
+        child.children= item.children.map((child)=>{
+            return {
+                key:child.path,
+                icon:generateElement(child.icon),
+                label:child.label
+            }
+        })
+    }
+    return child
+})
+
+function CommonAside() {
+    return (
+        <Sider trigger={null} collapsible>
+            <h3 className="app-name">后台管理系统</h3>
+            <Menu
+                theme="dark"
+                mode="inline"
+                defaultSelectedKeys={['1']}
+                items={items}
+                style={{
+                    height: '100%'
+                }} />
+        </Sider>
     );
 }
 
