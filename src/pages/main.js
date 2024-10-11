@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import CommonAside from '../components/commonAside';
-import CommonHeader from '../components/commonHeader';
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -9,17 +7,22 @@ import {
   VideoCameraOutlined,
 } from '@ant-design/icons';
 import { Button, Layout, Menu, theme } from 'antd';
-const { Content } = Layout;
+import { useSelector } from 'react-redux';
+import CommonAside from '../components/commonAside';
+import CommonHeader from '../components/commonHeader';
 
+const { Content } = Layout;
 const Main = () =>{
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
+  //获取展开收起的状态
+  const collapsed = useSelector(state => state.tab.isCollapse)
   return (
     <Layout className='main-container'>
-      <CommonAside />
+      <CommonAside collapsed={collapsed}/>
       <Layout>
-       <CommonHeader />
+       <CommonHeader collapsed={collapsed}/>
         <Content
           style={{
             margin: '24px 16px',

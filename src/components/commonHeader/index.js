@@ -4,13 +4,16 @@ import { Avatar } from "antd";
   import { MenuFoldOutlined } from '@ant-design/icons'
 import './index.css'
 const { Header } = Layout;
-const CommonHeader = ()=>{
+const CommonHeader = ({collapsed})=>{
     const logout = ()=>{
         console.log("成功登出");
     }
     const personalCenter = ()=>{
         console.log("进入个人中心")
     }
+    const setCollapsed = () => {
+      console.log(collapsed)
+     }
     const items = [
         {
           key: '1',
@@ -40,6 +43,7 @@ const CommonHeader = ()=>{
         height: 32,
         backgroundColor:'#fff'
       }}
+      onClick={setCollapsed}
     />
     <Dropdown menu={{items}}>
     <Avatar size={"large"} src={<img src= {require("../../assets/images/user.png")}/>} />
