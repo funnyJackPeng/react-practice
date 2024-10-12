@@ -1,33 +1,33 @@
 import React from "react";
 import * as Icon from '@ant-design/icons';
-  import {  Layout, Menu } from 'antd';
+import { Layout, Menu } from 'antd';
 import MenuConfig from "../../config";
-  const {  Sider } = Layout;
-  
-const generateElement = (name)=> React.createElement(Icon[name])
+const { Sider } = Layout;
 
-const items = MenuConfig.map((item)=>{
+const generateElement = (name) => React.createElement(Icon[name])
+
+const items = MenuConfig.map((item) => {
     const child = {
-        key:item.path,
-        icon:generateElement(item.icon),
-        label:item.label
+        key: item.path,
+        icon: generateElement(item.icon),
+        label: item.label
     }
-    if(item.children){
-        child.children= item.children.map((child)=>{
+    if (item.children) {
+        child.children = item.children.map((child) => {
             return {
-                key:child.path,
-                icon:generateElement(child.icon),
-                label:child.label
+                key: child.path,
+                icon: generateElement(child.icon),
+                label: child.label
             }
         })
     }
     return child
 })
 
-const CommonAside = ({collapsed})=> {
+const CommonAside = ({ collapsed }) => {
     return (
         <Sider trigger={null} collapsed={collapsed}>
-            <h3 className="app-name">{collapsed?'后台':'后台管理系统'}</h3>
+            <h3 className="app-name">{collapsed ? '后台' : '后台管理系统'}</h3>
             <Menu
                 theme="dark"
                 mode="inline"

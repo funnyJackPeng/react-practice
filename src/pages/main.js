@@ -10,6 +10,7 @@ import { Button, Layout, Menu, theme } from 'antd';
 import { useSelector } from 'react-redux';
 import CommonAside from '../components/commonAside';
 import CommonHeader from '../components/commonHeader';
+import { Outlet } from 'react-router-dom';
 
 const { Content } = Layout;
 const Main = () =>{
@@ -32,7 +33,7 @@ const Main = () =>{
             borderRadius: borderRadiusLG,
           }}
         >
-          Content
+          <Outlet />
         </Content>
       </Layout>
     </Layout>
