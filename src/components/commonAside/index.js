@@ -24,10 +24,10 @@ const items = MenuConfig.map((item)=>{
     return child
 })
 
-function CommonAside() {
+const CommonAside = ({collapsed})=> {
     return (
-        <Sider trigger={null} collapsible>
-            <h3 className="app-name">后台管理系统</h3>
+        <Sider trigger={null} collapsed={collapsed}>
+            <h3 className="app-name">{collapsed?'后台':'后台管理系统'}</h3>
             <Menu
                 theme="dark"
                 mode="inline"

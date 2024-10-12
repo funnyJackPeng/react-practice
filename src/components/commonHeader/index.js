@@ -1,6 +1,8 @@
 import React from "react";
 import { Avatar } from "antd";
   import { Button, Layout,Dropdown } from 'antd';
+  import {  useDispatch } from 'react-redux'
+  import { collapseMenu } from "../../store/reducers/tab";
   import { MenuFoldOutlined } from '@ant-design/icons'
 import './index.css'
 const { Header } = Layout;
@@ -11,8 +13,10 @@ const CommonHeader = ({collapsed})=>{
     const personalCenter = ()=>{
         console.log("进入个人中心")
     }
+    const dispatch = useDispatch()
     const setCollapsed = () => {
       console.log(collapsed)
+      dispatch(collapseMenu())
      }
     const items = [
         {
