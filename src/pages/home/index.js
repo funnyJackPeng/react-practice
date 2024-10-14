@@ -1,9 +1,15 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { Col, Row, Card } from 'antd';
 import './index.css'
+import { getData } from '../../api'
 const Home = () => {
-
     const userImg = require("../../assets/images/user.png")
+    useEffect(() => {
+        getData().then((res) => {
+            console.log(res)
+         })
+    }, [])
+
     return (
         <Row className="home">
             <Col span={8}>

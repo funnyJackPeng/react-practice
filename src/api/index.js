@@ -1,7 +1,7 @@
 import request from "./axios"
 
-const getData = () => {
-    request({
+export const getData = () => {
+    return request({
         url: '/home/getData',
         method: 'get',
         params: {}
