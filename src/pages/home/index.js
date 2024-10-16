@@ -75,12 +75,14 @@ const Home = () => {
       setColumnData(tableData)
       // 设置折线图数据
       const xData = orderData.date
+      // 指针移上去后显示的内容，因为数组中每个 object 都是一样的 key，所以只取第一个的 key arrary
       const keyArrary = Object.keys(orderData.data[0])
       const series = []
       keyArrary.forEach(key=>{
         series.push(
           {
             name:key,
+            //对于每个 key，将不同时间段的 data 遍历取出
             data: orderData.data.map( item => item[key] ),
             type:'line'
           }
@@ -88,6 +90,7 @@ const Home = () => {
       })
       setEchartData(
         {
+          //这里 echart data 中除了折线图，还会有其他图的数据，设置的时候先将原有的数据拿出来，然后往后加
           ...echartData,
           orderData:{
             xData:xData,
@@ -138,6 +141,7 @@ const Home = () => {
             })
           }
         </div>
+        {/* 这里需要等待请求结束后才会有数据，但页面渲染是一开始就会执行，所以得加额外判断 */}
        { echartData.orderData && <MyEchart chartData={echartData.orderData} style={{height:'280px'}}/> } 
       </Col>
     </Row>
