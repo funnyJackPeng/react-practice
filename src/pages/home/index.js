@@ -3,7 +3,8 @@ import { Col, Row, Card, Table } from 'antd';
 import './index.css'
 import * as Icon from "@ant-design/icons";
 import { getData } from '../../api'
-import * as echarts from 'echarts';
+import MyEchart from '../../components/echarts'
+
 const columns = [
   {
     title: '课程',
@@ -65,34 +66,36 @@ const generateElement = (name) => React.createElement(Icon[name])
 const Home = () => {
   const userImg = require("../../assets/images/user.png")
   const [columnData, setColumnData] = useState([])
+  const [echartData,setEchartData] = useState({})
   useEffect(() => {
-
     getData().then((res) => {
-      console.log(res)
-      console.log(res.data.data.tableData)
-      setColumnData(res.data.data.tableData)
-    })
-
-    // 基于准备好的dom，初始化echarts实例
-    var myChart = echarts.init(document.getElementById('main'));
-    // 绘制图表
-    myChart.setOption({
-      title: {
-        text: 'ECharts 入门示例'
-      },
-      tooltip: {},
-      xAxis: {
-        data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
-      },
-      yAxis: {},
-      series: [
+      console.log(res.data.data)
+      const {tableData,orderData} = res.data.data
+      //设置表格数据
+      setColumnData(tableData)
+      // 设置折线图数据
+      const xData = orderData.date
+      const keyArrary = Object.keys(orderData.data[0])
+      const series = []
+      keyArrary.forEach(key=>{
+        series.push(
+          {
+            name:key,
+            data: orderData.data.map( item => item[key] ),
+            type:'line'
+          }
+        )
+      })
+      setEchartData(
         {
-          name: '销量',
-          type: 'bar',
-          data: [5, 20, 36, 10, 10, 20]
+          ...echartData,
+          orderData:{
+            xData:xData,
+            series:series
+          }
         }
-      ]
-    });
+      )
+    })
   }, []
   )
 
@@ -135,7 +138,7 @@ const Home = () => {
             })
           }
         </div>
-        <div id="main" style={{ height: '300px' }}></div>
+       { echartData.orderData && <MyEchart chartData={echartData.orderData} style={{height:'280px'}}/> } 
       </Col>
     </Row>
   );
