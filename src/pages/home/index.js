@@ -4,6 +4,7 @@ import './index.css'
 import * as Icon from "@ant-design/icons";
 import { getData } from '../../api'
 import MyEchart from '../../components/echarts'
+import { type } from "@testing-library/user-event/dist/type";
 
 const columns = [
   {
@@ -66,11 +67,11 @@ const generateElement = (name) => React.createElement(Icon[name])
 const Home = () => {
   const userImg = require("../../assets/images/user.png")
   const [columnData, setColumnData] = useState([])
-  const [echartData,setEchartData] = useState({})
+  const [echartData, setEchartData] = useState({})
   useEffect(() => {
     getData().then((res) => {
       console.log(res.data.data)
-      const {tableData,orderData} = res.data.data
+      const { orderData, tableData, userData, videoData } = res.data.data
       //设置表格数据
       setColumnData(tableData)
       // 设置折线图数据
@@ -78,23 +79,42 @@ const Home = () => {
       // 指针移上去后显示的内容，因为数组中每个 object 都是一样的 key，所以只取第一个的 key arrary
       const keyArrary = Object.keys(orderData.data[0])
       const series = []
-      keyArrary.forEach(key=>{
+      keyArrary.forEach(key => {
         series.push(
           {
-            name:key,
+            name: key,
             //对于每个 key，将不同时间段的 data 遍历取出
-            data: orderData.data.map( item => item[key] ),
-            type:'line'
+            data: orderData.data.map(item => item[key]),
+            type: 'line'
           }
         )
       })
       setEchartData(
         {
-          //这里 echart data 中除了折线图，还会有其他图的数据，设置的时候先将原有的数据拿出来，然后往后加
-          ...echartData,
-          orderData:{
-            xData:xData,
-            series:series
+          orderData: {
+            xData: xData,
+            series: series
+          },
+          userData: {
+            xData: userData.map(item => item.date),
+            series: [
+              {
+                name: '新增用户',
+                data: userData.map(item => item.new),
+                type: 'bar'
+              },
+              {
+                name: '活跃用户',
+                data: userData.map(item => item.active),
+                type: 'bar'
+              },
+            ]
+          },
+          videoData:{
+            series:{
+              type: 'pie',
+              data:videoData
+            }
           }
         }
       )
@@ -142,7 +162,11 @@ const Home = () => {
           }
         </div>
         {/* 这里需要等待请求结束后才会有数据，但页面渲染是一开始就会执行，所以得加额外判断 */}
-       { echartData.orderData && <MyEchart chartData={echartData.orderData} style={{height:'280px'}}/> } 
+        {echartData.orderData && <MyEchart chartData={echartData.orderData} style={{ height: '280px' }} />}
+        <div className="graph">
+          {echartData.userData && <MyEchart chartData={echartData.userData} style={{height:'260px',width:'50%'}} />}
+          {echartData.videoData && <MyEchart chartData={echartData.videoData} isAxisChart={false} style={{height:'280px',width:'50%'}}/>}
+        </div>
       </Col>
     </Row>
   );
