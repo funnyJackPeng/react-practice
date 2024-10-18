@@ -4,7 +4,6 @@ import './index.css'
 import * as Icon from "@ant-design/icons";
 import { getData } from '../../api'
 import MyEchart from '../../components/echarts'
-import { type } from "@testing-library/user-event/dist/type";
 
 const columns = [
   {
