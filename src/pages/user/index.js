@@ -1,7 +1,7 @@
 import { Button, DatePicker, Form, Input, InputNumber, Modal, Popconfirm, Select, Table } from "antd"
 import React, { useEffect, useState } from "react"
 import './index.css'
-import { getUser, createUser, updateUser } from "../../api"
+import { getUser, createUser, updateUser, deleteUser } from "../../api"
 import dayjs from "dayjs"
 
 const User = () => {
@@ -60,14 +60,14 @@ const User = () => {
     ]
 
     const getTableData = () => {
-        getUser().then(res => {
+        getUser(searchParam).then(res => {
             setTableData(res.data.list)
         })
     }
 
     useEffect(() => {
         getTableData()
-    }, [])
+    }, [searchParam])
 
     const handleClick = (clickType, columnData) => {
         setisOpenModal(!isOpenModal)
@@ -108,18 +108,12 @@ const User = () => {
         setSearchParam({
             name: e.searchContent
         })
-        getUser(searchParam).then(res => {
-            setTableData(res.data.list)
-            console.log("搜索了")
-            console.log(searchParam)
-            console.log("返回内容为：")
-            console.log(res.data.list)
-        })
     }
 
     const handleDelete = (res) => {
-        console.log("删除了")
-        console.log(res)
+        deleteUser(res).then(()=>{
+            getTableData()
+        })
     }
 
     return <div>

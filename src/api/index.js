@@ -8,11 +8,11 @@ export const getData = () => {
     })
 }
 
-export const getUser = (param) => {
+export const getUser = (params) => {
     return request({
         url: '/user/getData',
         method: 'get',
-        param
+        params
     })
 }
 
@@ -28,6 +28,14 @@ export const updateUser = (data) => {
     return request({
         url: '/user/update',
         method: 'post',
+         data
+    })
+}
+
+export const deleteUser = (data) => {
+    return request({
+        url: '/user/delete',
+        method: 'delete',
          data
     })
 }
