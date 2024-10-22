@@ -1,7 +1,8 @@
 import { Button, DatePicker, Form, Input, InputNumber, Modal, Popconfirm, Select, Table } from "antd"
 import React, { useEffect, useState } from "react"
 import './index.css'
-import { getUser } from "../../api"
+import { getUser, createUser, updateUser } from "../../api"
+import dayjs from "dayjs"
 
 const User = () => {
     const [searchParam, setSearchParam] = useState({
@@ -57,28 +58,50 @@ const User = () => {
             }
         }
     ]
-    useEffect(() => {
+
+    const getTableData = () => {
         getUser().then(res => {
             setTableData(res.data.list)
         })
+    }
+
+    useEffect(() => {
+        getTableData()
     }, [])
 
     const handleClick = (clickType, columnData) => {
-        console.log(clickType)
-        console.log(columnData)
         setisOpenModal(!isOpenModal)
         if (clickType === 'add') {
             setIsAddUser(true)
         } else {
+            const deepCloneData = JSON.parse(JSON.stringify(columnData))
             setIsAddUser(false)
+            deepCloneData.birth = dayjs(deepCloneData.birth)
+            form.setFieldsValue(deepCloneData)
         }
     }
 
     const handleOk = () => {
-        setisOpenModal(!isOpenModal)
+        form.validateFields().then((val) => {
+            val.birth = dayjs(val.birth).format('YYYY-MM-DD')
+            if (isAddUser) {
+                createUser(val).then(() => {
+                    getTableData()
+                    handleCancel()
+                })
+            } else {
+                updateUser(val).then(() => {
+                    getTableData()
+                    handleCancel()
+                })
+            }
+        }).catch((error) => {
+            console.log(error)
+        })
     }
     const handleCancel = () => {
         setisOpenModal(!isOpenModal)
+        form.resetFields()
     }
 
     const handleFinish = (e) => {
@@ -127,6 +150,15 @@ const User = () => {
                 wrapperCol={{ span: 18 }}
                 labelAlign="left"
             >
+                {
+                    !isAddUser &&
+                    <Form.Item
+                        name='id'
+                        hidden='true'
+                    >
+                        <Input />
+                    </Form.Item>
+                }
                 <Form.Item
                     label="姓名"
                     name="name"
@@ -158,11 +190,11 @@ const User = () => {
                 >
                     <Select placeholder="请选择性别" options={[
                         {
-                            value: "0",
+                            value: 1,
                             label: "男",
                         },
                         {
-                            value: "1",
+                            value: 0,
                             label: "女",
                         }
                     ]} />
@@ -180,14 +212,14 @@ const User = () => {
                 </Form.Item>
                 <Form.Item
                     label="地址"
-                    name="address"
+                    name="addr"
                     rules={[
                         { required: true, message: "请输入地址" },
 
                     ]
                     }
                 >
-                    <Input placeholder="请输入地址"/>
+                    <Input placeholder="请输入地址" />
                 </Form.Item>
             </Form>
         </Modal>
