@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import CommonAside from '../components/commonAside';
 import CommonHeader from '../components/commonHeader';
 import { Outlet } from 'react-router-dom';
+import CommonTag from '../components/commonTag';
 
 const { Content } = Layout;
 const Main = () =>{
@@ -24,6 +25,7 @@ const Main = () =>{
       <CommonAside collapsed={collapsed}/>
       <Layout>
        <CommonHeader collapsed={collapsed}/>
+       <CommonTag />
         <Content
           style={{
             margin: '24px 16px',
