@@ -32,7 +32,6 @@ const CommonAside = ({ collapsed }) => {
     const dispath = useDispatch()
     // dispath(setTabList(val))
     const selectMenu = (e)=>{
-        console.log('e is ',e)
         let data
         MenuConfig.forEach(item=>{
             if(item.path === e.keyPath[e.keyPath.length-1]){
@@ -42,7 +41,7 @@ const CommonAside = ({ collapsed }) => {
                 }
             }
         })
-        dispath(setTabList({path:data.path,name:data.name,lable:data.label}))
+        dispath(setTabList({path:data.path,name:data.name,label:data.label}))
             navigate(e.key)
     }
     return (

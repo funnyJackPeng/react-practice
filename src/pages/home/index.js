@@ -69,7 +69,6 @@ const Home = () => {
   const [echartData, setEchartData] = useState({})
   useEffect(() => {
     getData().then((res) => {
-      console.log(res.data.data)
       const { orderData, tableData, userData, videoData } = res.data.data
       //设置表格数据
       setColumnData(tableData)

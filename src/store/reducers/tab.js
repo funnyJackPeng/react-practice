@@ -8,19 +8,23 @@ const tabSlice =  createSlice({
             path:'/',
             name:'home',
             label:'首页'
-        }]
+        }],
+        currentTab:{
+            path:'/',
+            name:'home',
+            label:'首页'
+        }
     },
     reducers:{
         collapseMenu:state=>{
             state.isCollapse =! state.isCollapse
         },
         setTabList:(state,{payload:val})=>{
-            if(val.name!=='home'){
+            state.currentTab = val
                 //如果已存在 tab 则不需要 push
                if(!state.tabList.some(item=>item.name === val.name)){
                 state.tabList.push(val)
                }
-            }
         }
     }
 })
