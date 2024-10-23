@@ -3,6 +3,8 @@ import * as Icon from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
 import MenuConfig from "../../config";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setTabList } from "../../store/reducers/tab";
 const { Sider } = Layout;
 
 const generateElement = (name) => React.createElement(Icon[name])
@@ -27,8 +29,21 @@ const items = MenuConfig.map((item) => {
 
 const CommonAside = ({ collapsed }) => {
     const navigate = useNavigate()
-    const selectMenu = ({key})=>{
-            navigate(key)
+    const dispath = useDispatch()
+    // dispath(setTabList(val))
+    const selectMenu = (e)=>{
+        console.log('e is ',e)
+        let data
+        MenuConfig.forEach(item=>{
+            if(item.path === e.keyPath[e.keyPath.length-1]){
+                data = item
+                if(e.keyPath.length>1){
+                    data = item.children.find(child=>{return child.path == e.key})
+                }
+            }
+        })
+        dispath(setTabList({path:data.path,name:data.name,lable:data.label}))
+            navigate(e.key)
     }
     return (
         <Sider trigger={null} collapsed={collapsed}>
