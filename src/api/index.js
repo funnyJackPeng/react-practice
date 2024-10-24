@@ -39,3 +39,11 @@ export const deleteUser = (data) => {
          data
     })
 }
+
+export const getMenu = (data) => {
+    return request({
+        url: '/permission/getMenu',
+        method: 'get',
+         data
+    })
+}

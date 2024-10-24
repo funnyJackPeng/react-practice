@@ -1,17 +1,11 @@
-import React, { useState } from 'react';
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-} from '@ant-design/icons';
-import { Button, Layout, Menu, theme } from 'antd';
+import React from 'react';
+import { Layout, theme } from 'antd';
 import { useSelector } from 'react-redux';
 import CommonAside from '../components/commonAside';
 import CommonHeader from '../components/commonHeader';
 import { Outlet } from 'react-router-dom';
 import CommonTag from '../components/commonTag';
+import RouterAuth from '../router/routerAuth';
 
 const { Content } = Layout;
 const Main = () =>{
@@ -21,7 +15,8 @@ const Main = () =>{
   //获取展开收起的状态
   const collapsed = useSelector(state => state.tab.isCollapse)
   return (
-    <Layout className='main-container'>
+    <RouterAuth>
+  <Layout className='main-container'>
       <CommonAside collapsed={collapsed}/>
       <Layout>
        <CommonHeader collapsed={collapsed}/>
@@ -39,6 +34,7 @@ const Main = () =>{
         </Content>
       </Layout>
     </Layout>
+    </RouterAuth>
   );
 }
 

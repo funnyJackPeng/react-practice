@@ -5,9 +5,13 @@ import { useDispatch } from 'react-redux'
 import { collapseMenu } from "../../store/reducers/tab";
 import { MenuFoldOutlined } from '@ant-design/icons'
 import './index.css'
+import { useNavigate } from "react-router-dom";
 const { Header } = Layout;
 const CommonHeader = ({ collapsed }) => {
+  const navigate = useNavigate()
   const logout = () => {
+    localStorage.removeItem('token')
+    navigate("/login")
     console.log("成功登出");
   }
   const personalCenter = () => {
